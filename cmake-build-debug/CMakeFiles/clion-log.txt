@@ -1,0 +1,4 @@
+/home/ant1k/clion-2017.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/ant1k/CLionProjects/FinalTaskYellowBelt
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/ant1k/CLionProjects/FinalTaskYellowBelt/cmake-build-debug
