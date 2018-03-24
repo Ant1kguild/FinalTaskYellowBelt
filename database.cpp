@@ -17,8 +17,8 @@ void Database::Add(const Date &date, const std::string &event) {
             (*it2).second.insert(date);
         }
     } else {
-        database.dateEvent.insert({date, event});
-        database.eventsDate.insert({event, date});
+        database.dateEvent.insert(make_pair(date, event));
+        database.eventsDate.insert(make_pair(date, event));
     }
 }
 
@@ -32,19 +32,19 @@ void Database::Print(std::ostream &cout) {
 
 
 std::string Database::RemoveIf(const std::function<bool(const Date &, const std::string &)> &predicate) {
-    int quantity = 0;
-
-
-
-    return to_string(quantity);
+//    int quantity = 0;
+//
+//
+//
+//    return to_string(quantity);
 }
 
 
 std::vector<pair<Date, std::string>>
 Database::FindIf(const std::function<bool(const Date &, const std::string &)> &predicate) {
-    std::vector<pair<Date, std::string>> quantity;
-
-    return quantity;
+//    std::vector<pair<Date, std::string>> quantity;
+//
+//    return quantity;
 }
 
 

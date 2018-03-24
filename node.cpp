@@ -54,13 +54,13 @@ LogicalOperationNode::LogicalOperationNode(const LogicalOperation &logical_opera
           _right(std::move(right)) {}
 
 PredicateIt LogicalOperationNode::Evaluate(Date date, const std::string &event) {
-    Condition _date;
+    auto lhs = _left.get()->Evaluate(date, event);
+    auto rhs = _right.get()->Evaluate(date, event);
     Condition _event;
     switch (_logical_operation) {
         case LogicalOperation::And:
-            if ()
-            return PredicateIt(_date, _event);
+            return PredicateIt::createLogicalOP_and(lhs, rhs);
         case LogicalOperation::Or:
-            return PredicateIt(_date, _event);
+            return PredicateIt::createLogicalOP_or(lhs, rhs);
     }
 }
