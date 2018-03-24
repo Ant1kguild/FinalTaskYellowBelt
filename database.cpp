@@ -5,24 +5,26 @@
 #include "database.h"
 
 
+
 void Database::Add(const Date &date, const std::string &event) {
-    auto dateAvailability = binary_search(database.begin(), database.end(), date);
-    if (dateAvailability) {
-        auto eventAvailability = binary_search(database[date].first.begin(), database[date].first.end(), event);
-        if (!eventAvailability) {
-            database[date].first.insert(event);
-            database[date].second.push_back(event);
+    auto dataEvent = database.dateEvent;
+    auto eventDate = database.eventsDate;
+    auto it = dataEvent.find(date);
+    if (it != dataEvent.end()){
+        auto it2 = eventDate.find(event);
+        if (it2 == eventDate.end()) {
+            (*it).second.push_back(event);
+            (*it2).second.insert(date);
         }
     } else {
-        database[date].first.insert(event);
-        database[date].second.push_back(event);
+        database.dateEvent.insert({date, event});
+        database.eventsDate.insert({event, date});
     }
-
 }
 
 void Database::Print(std::ostream &cout) {
-    for (const auto &i : database) {
-        for (const auto &j : i.second.second) {
+    for (const auto &i : database.dateEvent) {
+        for (const auto &j : i.second) {
             cout << i.first << j << endl;
         }
     }
@@ -31,23 +33,7 @@ void Database::Print(std::ostream &cout) {
 
 std::string Database::RemoveIf(const std::function<bool(const Date &, const std::string &)> &predicate) {
     int quantity = 0;
-    std::string emptyEvent;
-            for (auto &i : database) {
-            if (predicate(i.first, emptyEvent)) {
-                quantity += i.second.first.size();
-                database.erase(i.first);
-            } else {
-                for (auto &j : i.second.first) {
-                    if (predicate(i.first, j)) {
-                        auto ItVec = find(database[i.first].second.begin(), database[i.first].second.end(), j);
-                        database[i.first].first.erase(j);
-                        database[i.first].second.erase(ItVec);
-                        ++quantity;
-                    }
-                }
-            }
-            if (database[i.first].first.empty() && database[i.first].second.empty()) database.erase(i.first);
-        }
+
 
 
     return to_string(quantity);
@@ -57,29 +43,23 @@ std::string Database::RemoveIf(const std::function<bool(const Date &, const std:
 std::vector<pair<Date, std::string>>
 Database::FindIf(const std::function<bool(const Date &, const std::string &)> &predicate) {
     std::vector<pair<Date, std::string>> quantity;
-    for (const auto &i : database) {
-        for (const auto &j : i.second.second) {
-            if (predicate(i.first, j)) {
-                quantity.emplace_back(i.first, j);
-            }
-        }
-    }
+
     return quantity;
 }
 
 
 std::string Database::Last(const Date &date) {
-    std::string DateEvent;
-    std::ostringstream lastDate;
-    if (date < (*database.begin()).first || database.empty()) {
-        throw invalid_argument(lastDate.str());
-    } else {
-        auto theLastDateInDB = lower_bound(database.begin(), database.end(), date);
-        --theLastDateInDB;
-        lastDate << (*theLastDateInDB).first << (*theLastDateInDB).second.second.back();
-        DateEvent = lastDate.str();
-        return DateEvent;
-    }
+//    std::string DateEvent;
+//    std::ostringstream lastDate;
+//    if (date < (*database.dateEvent.begin()).first || database.dateEvent.empty()) {
+//        throw invalid_argument(lastDate.str());
+//    } else {
+//        auto theLastDateInDB = lower_bound(database.begin(), database.end(), date);
+//        --theLastDateInDB;
+//        lastDate << (*theLastDateInDB).first << (*theLastDateInDB).second.second.back();
+//        DateEvent = lastDate.str();
+//        return DateEvent;
+//    }
 
 }
 

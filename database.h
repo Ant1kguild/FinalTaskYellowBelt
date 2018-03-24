@@ -11,6 +11,13 @@
 #include <set>
 
 
+struct DateEvent {
+    std::map<Date, std::vector<string>> dateEvent;
+    std::map<std::string, std::set<Date>> eventsDate;
+};
+
+
+
 class Database {
 public:
     void Add(const Date &date, const std::string &event);
@@ -28,7 +35,7 @@ public:
     std::string Last(const Date &date);
 
 private:
-    std::map<Date, std::pair<std::set<std::string>, std::vector<std::string>>> database;
+    DateEvent database;
 };
 
 
