@@ -5,6 +5,7 @@
 #pragma once
 
 #include "date.h"
+#include "node.h"
 #include <map>
 #include <algorithm>
 #include <functional>
@@ -24,11 +25,11 @@ public:
 
     void Print(std::ostream &cout);
 
-    using Predicate =  std::function<bool(const Date &, const std::string &)>;
+    using Predicate =  std::function<PredicateIt(const Date &, const std::string &)>;
 
-    std::string RemoveIf(const std::function<bool(const Date &, const std::string &)> &predicate);
+    std::string RemoveIf(const Predicate &predicate);
 
-    std::vector<pair<Date, std::string>> FindIf(const std::function<bool(const Date &, const std::string &)> &predicate);
+    std::vector<pair<Date, std::string>> FindIf(const Predicate &predicate);
 
     friend void TestAddDateEvent();
 
@@ -36,6 +37,14 @@ public:
 
 private:
     DateEvent database;
+
+    bool removeByPredicate(const Predicate &function,
+                           map<Date, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>::iterator iterator,
+                           __gnu_cxx::__normal_iterator<string *, vector<string>> normal_iterator);
+
+    bool findByPredicate(const Predicate &function,
+                         map<Date, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>::iterator iterator,
+                         __gnu_cxx::__normal_iterator<string *, vector<string>> normal_iterator);
 };
 
 

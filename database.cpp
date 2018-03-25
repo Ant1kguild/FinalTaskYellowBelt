@@ -3,22 +3,24 @@
 //
 
 #include "database.h"
-
+#include <set>
 
 
 void Database::Add(const Date &date, const std::string &event) {
     auto dataEvent = database.dateEvent;
-    auto eventDate = database.eventsDate;
-    auto it = dataEvent.find(date);
-    if (it != dataEvent.end()){
-        auto it2 = eventDate.find(event);
-        if (it2 == eventDate.end()) {
-            (*it).second.push_back(event);
-            (*it2).second.insert(date);
+    //auto eventDate = database.eventsDate;
+    auto itDate = dataEvent.find(date);
+    //auto itEvent = eventDate.find(event);
+    // проверяем что такая дата есть
+    if (itDate != dataEvent.end()) {
+        auto itEvent = find(itDate->second.begin(), itDate->second.end(), event); // ищем наличие события в дате
+        if (itEvent == itDate->second.end()) {
+            itDate->second.push_back(event);
         }
     } else {
-        database.dateEvent.insert(make_pair(date, event));
-        database.eventsDate.insert(make_pair(date, event));
+        vector<string> e {event};
+        dataEvent.insert(make_pair(date, e));
+        dataEvent[date] = e;
     }
 }
 
@@ -31,35 +33,52 @@ void Database::Print(std::ostream &cout) {
 }
 
 
-std::string Database::RemoveIf(const std::function<bool(const Date &, const std::string &)> &predicate) {
-//    int quantity = 0;
-//
-//
-//
-//    return to_string(quantity);
+std::string Database::RemoveIf(const Predicate &predicate) {
+    int quantity = 0;
+    auto datesEvents = database.dateEvent;
+    for (auto it = datesEvents.begin(); it != datesEvents.end(); ++it) {
+        cout << it->second.size();
+        for (auto it2 = it->second.begin(); it2 != it->second.end(); /*++it2*/) {
+            std::cout << endl << "/" << it->first << *it2 << "/" << endl;
+            if (removeByPredicate(predicate, it, it2)) {
+                ++quantity;
+            } else {
+                ++it2;
+            }
+        }
+    }
+    return to_string(quantity);
 }
 
 
 std::vector<pair<Date, std::string>>
-Database::FindIf(const std::function<bool(const Date &, const std::string &)> &predicate) {
-//    std::vector<pair<Date, std::string>> quantity;
-//
-//    return quantity;
+Database::FindIf(const Predicate &predicate) {
+    std::vector<pair<Date, std::string>> quantity;
+    auto datesEvents = database.dateEvent;
+    for (auto it = datesEvents.begin(); it != datesEvents.end(); ++it) {
+        for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
+            if (findByPredicate(predicate, it, it2)) quantity.emplace_back((*it).first, *it2);
+        }
+    }
+    return quantity;
 }
 
+bool operator<(std::pair<const Date, std::vector<string>> &lhs, const Date &rhs) {
+    return lhs.first < rhs;
+}
 
 std::string Database::Last(const Date &date) {
-//    std::string DateEvent;
-//    std::ostringstream lastDate;
-//    if (date < (*database.dateEvent.begin()).first || database.dateEvent.empty()) {
-//        throw invalid_argument(lastDate.str());
-//    } else {
-//        auto theLastDateInDB = lower_bound(database.begin(), database.end(), date);
-//        --theLastDateInDB;
-//        lastDate << (*theLastDateInDB).first << (*theLastDateInDB).second.second.back();
-//        DateEvent = lastDate.str();
-//        return DateEvent;
-//    }
+    std::string DateEvent;
+    std::ostringstream lastDate;
+    if (date < (*database.dateEvent.begin()).first || database.dateEvent.empty()) {
+        throw invalid_argument(lastDate.str());
+    } else {
+        auto theLastDateInDB = lower_bound(database.dateEvent.begin(), database.dateEvent.end(), date);
+        --theLastDateInDB;
+        lastDate << (*theLastDateInDB).first << (*theLastDateInDB).second.back();
+        DateEvent = lastDate.str();
+        return DateEvent;
+    }
 
 }
 
@@ -120,6 +139,47 @@ void TestAddDateEvent() {
     }
 
 
+}
+
+bool Database::removeByPredicate(const Database::Predicate &function,
+                                 map<Date, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>::iterator it1,
+                                 __gnu_cxx::__normal_iterator<string *, vector<string>> it2) {
+    if (findByPredicate(function, it1, it2)) {
+
+        auto it = database.eventsDate.find(*it2);
+        if (it != database.eventsDate.end()) {
+            it->second.erase(it1->first);
+            if (it->second.empty()) database.eventsDate.erase(it);
+        }
+        it1->second.erase(it2);
+        it2++;
+        if (it1->second.empty()) database.dateEvent.erase(it1);
+        return true;
+    }
+    return false;
+}
+
+bool Database::findByPredicate(const Database::Predicate &function,
+                               map<Date, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>::iterator it1,
+                               __gnu_cxx::__normal_iterator<string *, vector<string>> it2) {
+    auto result = function((*it1).first, *it2);
+    switch (result.date) {
+        case Condition::Any:
+        case Condition::This:
+            switch (result.event) {
+                case Condition::Any:
+                case Condition::This:
+                    return true;
+                case Condition::None:
+                    it2++;
+                    return false;
+            }
+        case Condition::None:
+            it1++;
+            return false;
+
+    }
+    return false;
 }
 
 std::ostream &operator<<(std::ostream &stream, const std::pair<Date, std::string> &map) {

@@ -20,9 +20,12 @@ CMakeFiles/FinalTaskYellowBelt.dir/condition_parser_test.cpp.o
  /home/ant1k/CLionProjects/FinalTaskYellowBelt/test_runner.h
  /home/ant1k/CLionProjects/FinalTaskYellowBelt/token.h
 CMakeFiles/FinalTaskYellowBelt.dir/database.cpp.o
+ /home/ant1k/CLionProjects/FinalTaskYellowBelt/comparison.h
  /home/ant1k/CLionProjects/FinalTaskYellowBelt/database.cpp
  /home/ant1k/CLionProjects/FinalTaskYellowBelt/database.h
  /home/ant1k/CLionProjects/FinalTaskYellowBelt/date.h
+ /home/ant1k/CLionProjects/FinalTaskYellowBelt/logical_operation.h
+ /home/ant1k/CLionProjects/FinalTaskYellowBelt/node.h
  /home/ant1k/CLionProjects/FinalTaskYellowBelt/test_runner.h
 CMakeFiles/FinalTaskYellowBelt.dir/date.cpp.o
  /home/ant1k/CLionProjects/FinalTaskYellowBelt/date.cpp

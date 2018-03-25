@@ -35,10 +35,14 @@ sstream
 /home/ant1k/CLionProjects/FinalTaskYellowBelt/database.cpp
 database.h
 /home/ant1k/CLionProjects/FinalTaskYellowBelt/database.h
+set
+-
 
 /home/ant1k/CLionProjects/FinalTaskYellowBelt/database.h
 date.h
 /home/ant1k/CLionProjects/FinalTaskYellowBelt/date.h
+node.h
+/home/ant1k/CLionProjects/FinalTaskYellowBelt/node.h
 map
 -
 algorithm

@@ -29,19 +29,7 @@ enum class LogicOpPr {
     ThisAny
 };
 
-LogicOpPr makeLogicOpPr(Condition lhs, Condition rhs) {
-    if (lhs == Condition::None && rhs == Condition::None) return LogicOpPr::NoneNone;
-    if (lhs == Condition::None && rhs == Condition::Any) return LogicOpPr::NoneAny;
-    if (lhs == Condition::None && rhs == Condition::This) return LogicOpPr::NoneThis;
-    if (lhs == Condition::Any && rhs == Condition::Any) return LogicOpPr::AnyAny;
-    if (lhs == Condition::Any && rhs == Condition::None) return LogicOpPr::AnyNone;
-    if (lhs == Condition::Any && rhs == Condition::This) return LogicOpPr::AnyThis;
-    if (lhs == Condition::This && rhs == Condition::This) return LogicOpPr::ThisThis;
-    if (lhs == Condition::This && rhs == Condition::None) return LogicOpPr::ThisNone;
-    if (lhs == Condition::This && rhs == Condition::Any) return LogicOpPr::ThisAny;
 
-
-}
 
 struct PredicateIt {
     PredicateIt(Condition _date, Condition _event) : date(_date), event(_event) {}
@@ -57,6 +45,19 @@ struct PredicateIt {
         return PredicateIt(Condition::Any, result ? Condition::This : Condition::None);
     }
 
+    static LogicOpPr makeLogicOpPr(Condition lhs, Condition rhs) {
+        if (lhs == Condition::None && rhs == Condition::None) return LogicOpPr::NoneNone;
+        if (lhs == Condition::None && rhs == Condition::Any) return LogicOpPr::NoneAny;
+        if (lhs == Condition::None && rhs == Condition::This) return LogicOpPr::NoneThis;
+        if (lhs == Condition::Any && rhs == Condition::Any) return LogicOpPr::AnyAny;
+        if (lhs == Condition::Any && rhs == Condition::None) return LogicOpPr::AnyNone;
+        if (lhs == Condition::Any && rhs == Condition::This) return LogicOpPr::AnyThis;
+        if (lhs == Condition::This && rhs == Condition::This) return LogicOpPr::ThisThis;
+        if (lhs == Condition::This && rhs == Condition::None) return LogicOpPr::ThisNone;
+        if (lhs == Condition::This && rhs == Condition::Any) return LogicOpPr::ThisAny;
+
+
+    }
 
     static void changeConditionAnd(LogicOpPr lop, Condition &val) {
         switch (lop) {
@@ -96,28 +97,28 @@ struct PredicateIt {
                 val = Condition::None;
                 break;
             case LogicOpPr::NoneAny:
-                val = Condition::None;
+                val = Condition::Any;
                 break;
             case LogicOpPr::NoneThis:
-                val = Condition::None;
+                val = Condition::This;
                 break;
             case LogicOpPr::AnyAny:
                 val = Condition::Any;
                 break;
             case LogicOpPr::AnyNone:
-                val = Condition::None;
+                val = Condition::Any;
                 break;
             case LogicOpPr::AnyThis:
-                val = Condition::This;
+                val = Condition::Any;
                 break;
             case LogicOpPr::ThisThis:
                 val = Condition::This;
                 break;
             case LogicOpPr::ThisNone:
-                val = Condition::None;
+                val = Condition::This;
                 break;
             case LogicOpPr::ThisAny:
-                val = Condition::This;
+                val = Condition::Any;
                 break;
         }
     }

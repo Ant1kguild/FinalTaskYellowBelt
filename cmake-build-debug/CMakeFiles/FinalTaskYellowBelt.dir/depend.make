@@ -19,9 +19,12 @@ CMakeFiles/FinalTaskYellowBelt.dir/condition_parser_test.cpp.o: ../node.h
 CMakeFiles/FinalTaskYellowBelt.dir/condition_parser_test.cpp.o: ../test_runner.h
 CMakeFiles/FinalTaskYellowBelt.dir/condition_parser_test.cpp.o: ../token.h
 
+CMakeFiles/FinalTaskYellowBelt.dir/database.cpp.o: ../comparison.h
 CMakeFiles/FinalTaskYellowBelt.dir/database.cpp.o: ../database.cpp
 CMakeFiles/FinalTaskYellowBelt.dir/database.cpp.o: ../database.h
 CMakeFiles/FinalTaskYellowBelt.dir/database.cpp.o: ../date.h
+CMakeFiles/FinalTaskYellowBelt.dir/database.cpp.o: ../logical_operation.h
+CMakeFiles/FinalTaskYellowBelt.dir/database.cpp.o: ../node.h
 CMakeFiles/FinalTaskYellowBelt.dir/database.cpp.o: ../test_runner.h
 
 CMakeFiles/FinalTaskYellowBelt.dir/date.cpp.o: ../date.cpp
